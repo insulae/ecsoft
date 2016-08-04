@@ -32,6 +32,7 @@ main : function() {
 	var doc = this.getRoot();
 	// PRUEBA
 	// PRUEBA 2
+	// PRUEBA 3
 	doc.add(new ecsoft.forms.checks());
 }
 }});
