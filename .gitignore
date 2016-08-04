@@ -3,3 +3,6 @@ cache-downloads
 inspector
 api
 source/inspector.html
+/config.json
+/generate.py
+/Gruntfile.js
