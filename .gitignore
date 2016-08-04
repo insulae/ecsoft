@@ -6,3 +6,5 @@ source/inspector.html
 /config.json
 /generate.py
 /Gruntfile.js
+.project
+.gitignore
