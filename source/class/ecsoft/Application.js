@@ -29,7 +29,7 @@ main : function() {
 		qx.log.appender.Console;
 	}
 	var doc = this.getRoot();
-	
+	// PRUEBA
 	doc.add(new ecsoft.forms.checks());
 }
 }});
