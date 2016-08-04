@@ -23,6 +23,7 @@ members : {
  * @lint ignoreDeprecated(alert)
  */
 main : function() {
+	// Simultaneo
 	this.base(arguments);
 	if (qx.core.Environment.get("qx.debug")) {
 		qx.log.appender.Native;
