@@ -49,6 +49,7 @@ main : function() {
 	
 	//APLICACION
 	doc.add(menuGral,{top: "0%", bottom:"70%", left: "1%",right:"90%", edge:1});
+	doc.add(new ecsoft.pds.pds(),{top: "0%", left: "1%", width: "1%", height: "1%", edge:1});
 	
 	btnPDS.addListener("click",function(){
    	 //TODO Como hacer bien el switch este para ir cambiando de un js a otro

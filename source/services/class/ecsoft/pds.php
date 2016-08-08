@@ -11,12 +11,22 @@ class class_pds extends class_Base {
 function method_getChecks ($params, $error) {
 	$p = @$params[0];
 	$db = $this->db;
-	
-	$q = $db->query("
-			SELECT * 
-			FROM rec 
-			WHERE id_avion = '".$p->id_avion."'
-	");
+	$filtro = "";
+	if($p->observacion){
+		$filtro = ' AND observacion LIKE "%'.$p->observacion.'%"';
+	}
+	$q = $db->query('
+		SELECT
+			id_check
+			, observacion
+			, sensores
+			, fyh
+		FROM checks
+		WHERE id_avion = '.$p->id_avion.'
+		AND fyh BETWEEN "'.$p->fecDesde.' 00:00:00" AND "'.$p->fecHasta.' 23:59:59"
+		'.$filtro.'
+		ORDER BY fyh DESC
+	');
 	if ($db->error) { $error->SetError(JsonRpcError_Unknown, (__FILE__ . " - " . (__LINE__ - 1) . ": " . $db->error)); return $error; }
 	
 	$res = Array();

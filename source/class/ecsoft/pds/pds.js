@@ -18,34 +18,55 @@ construct : function () {
 		menuPDS.setLayout(new qx.ui.layout.VBox(2).set({alignX:"left"}));
  	
  		var lblAviones = new qx.ui.basic.Label("Aviones");
- 		var lstAviones = new qx.ui.form.List();
-	    	lstAviones.set({minHeight:200, minWidth:50, selectionMode : "one" });
+ 		this._lstAviones = new qx.ui.form.List();
+ 		this._lstAviones.set({minHeight:200, minWidth:50, selectionMode : "one" });
 	    
 	    	var item;
 	    	for( var i=0; i<aviones.length; i++ )
 	    	{
 	    		item = new qx.ui.form.ListItem(aviones[i].patente, "icon/16/places/folder.png",aviones[i].id_avion);
-	    		lstAviones.add(item);
+	    		this._lstAviones.add(item);
 	    	};
 	
-	    var lblFecDesde = new qx.ui.basic.Label("Desde:");
-	    var fecDesde = new qx.ui.form.DateField();
 	    
-	    var lblFecHasta = new qx.ui.basic.Label("Hasta:");
-	    var fecHasta = new qx.ui.form.DateField();
+	    var fecFormato = new qx.util.format.DateFormat("yyyy-MM-dd"); //defino formato
+	    var lblFecDesde = new qx.ui.basic.Label("Fec.Desde:");
+	    this._fecDesde = new qx.ui.form.DateField();
+	    this._fecDesde.setDateFormat(fecFormato); //seteo el formato
 	    
-	    var lblFiltro = new qx.ui.basic.Label("Filtro");
-	    var txtFiltro = new qx.ui.form.TextField();
+	    //seteo en fecDesde para que sea 2 meses 
+	    var todayTime = new Date();
+		var ano = todayTime.getFullYear();
+	    var mes = todayTime.getMonth()-1;
+	    var dia = todayTime.getDate();
+	    this._fecDesde.setValue(this._fecDesde.getDateFormat().parse(ano+"-"+mes+"-"+dia));
+	    
+	    var lblFecHasta = new qx.ui.basic.Label("Fec. Hasta:");
+	    this._fecHasta = new qx.ui.form.DateField();
+	    this._fecHasta.setValue(new Date());
+	    this._fecHasta.setDateFormat(fecFormato);
+	    
+	    
+	    
+	    
+	    
+	    var lblObservacion = new qx.ui.basic.Label("Observación");
+	    this._txtObservacion = new qx.ui.form.TextField();
+	    
+	    var lblFiltrar = new qx.ui.basic.Label("Filtrar:");
+	    var btnFiltrar = new qx.ui.form.Button("Filtrar");
+	    
 	    
 	   
 	 menuPDS.add(lblAviones);
-	 menuPDS.add(lstAviones);
+	 menuPDS.add(this._lstAviones);
 	 menuPDS.add(lblFecDesde);
-	 menuPDS.add(fecDesde);
+	 menuPDS.add(this._fecDesde);
 	 menuPDS.add(lblFecHasta);
-	 menuPDS.add(fecHasta);
-	 menuPDS.add(lblFiltro);
-	 menuPDS.add(txtFiltro);
+	 menuPDS.add(this._fecHasta);
+	 menuPDS.add(lblObservacion);
+	 menuPDS.add(this._txtObservacion);
+	 menuPDS.add(btnFiltrar);
     
     //TABS PDS
     var tbvPDS = new qx.ui.tabview.TabView();
@@ -56,28 +77,26 @@ construct : function () {
 		//tabs
 		 var checks = new qx.ui.tabview.Page("Checks","");
 	     	checks.setLayout(new qx.ui.layout.Canvas());
-	     	var tblChecks = new ecsoft.pds.checks();
+	     	this._tblChecks = new ecsoft.pds.checks();
 	     	checks.setBackgroundColor("#e5caa7");
 	     	
-	     	var txaArea = new qx.ui.form.TextArea();
 	     	
 	     	checks.setLayout(new qx.ui.layout.Canvas());
-	     	checks.add(new ecsoft.pds.grafica(),{top: "1%", left: "1%", bottom: "30%", edge:1});	     	
-	     checks.add(tblChecks,{top: "71%", left: "1%", bottom:"0%", edge:1});
-	     //checks.add(txaArea,{top: "1%", left: "1%", bottom: "30%", edge:1});
+	     	//checks.add(new ecsoft.pds.grafica(),{top: "1%", left: "1%", bottom: "30%", edge:1});	     	
+	     checks.add(this._tblChecks,{top: "71%", left: "1%", bottom:"0%", edge:1});
 	     
 		 var cranks = new qx.ui.tabview.Page("Cranks", "");
 	     	cranks.setLayout(new qx.ui.layout.Canvas());
-	     	var tblCranks= new ecsoft.pds.cranks();
+	     	this._tblCranks= new ecsoft.pds.cranks();
 	     	cranks.setBackgroundColor("#e5caa7");
 	     	
-	     cranks.add(tblCranks,{top: "71%", left: "1%", bottom:"0%", edge:1});
+	     cranks.add(this._tblCranks,{top: "71%", left: "1%", bottom:"0%", edge:1});
 	     cranks.add(new ecsoft.pds.cranks(),{top: "1%", left: "1%", bottom: "30%", edge:1});
 
 		 
 		 var grabaciones = new qx.ui.tabview.Page("Grabaciones", "");
 	     	grabaciones.setLayout(new qx.ui.layout.Canvas());
-	     	grabaciones.add(new ecsoft.pds.grafica(),{top: "1%", left: "1%", bottom: "30%", edge:1});
+	     	//grabaciones.add(new ecsoft.pds.grafica(),{top: "1%", left: "1%", bottom: "30%", edge:1});
 		 
 	     
      
@@ -86,28 +105,31 @@ construct : function () {
      tbvPDS.add(grabaciones);
      
      this._add(menuPDS,{top:"30%", bottom:"50%", right:"90%", edge:0});
-     this._add(tbvPDS,{left:"14%", top:"1%", edge:0});
+     this._add(tbvPDS,{left:160, top:"1%", edge:0});
  	
      
-     //eventos
-     tblChecks.addListener("cambiarDatosGraf",function(e){
-    	 txaArea.setValue(e.getData());
+//################################################# EVENTOS ################################################# 
+     this._tblChecks.addListener("cambiarDatosGraf",function(e){
+    	 console.log(e.getData());
      },this);
-
-     this.addListener("cambiarDatosAvion",function(e){
-    	 tblChecks.traerDatos(e.getData());
-    	 tblCranks.traerDatos(e.getData());
-     },this);
-
-     lstAviones.addListener("changeSelection",function(){
-    	 //TODO como mierda se agrega un value y tomarlo
-    	 var id_avion = lstAviones.getSelection()[0].getModel();
- 		this.fireDataEvent("cambiarDatosAvion",id_avion);
- 	},this);
+     
+     //eventos menu
+     this._lstAviones.addListener("changeSelection", this._cambiarDatos, this);
+     btnFiltrar.addListener("execute",this._cambiarDatos,this);
+     
 },
 
 members : {
-	
+	_cambiarDatos:  function(){
+   	 var filtros={};
+	 filtros.id_avion = this._lstAviones.getSelection()[0].getModel();
+	 filtros.fecDesde = this._fecDesde.getDateFormat().format(this._fecDesde.getValue());
+	 filtros.fecHasta = this._fecHasta.getDateFormat().format(this._fecHasta.getValue());
+	 filtros.observacion = this._txtObservacion.getValue();
+	 
+	 this._tblChecks.traerDatos(filtros);
+	 this._tblCranks.traerDatos(filtros);
+	}	
 }
 
 

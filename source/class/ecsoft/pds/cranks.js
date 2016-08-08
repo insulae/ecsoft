@@ -43,10 +43,8 @@ construct : function () {
 	},this);
 },
 members : {
-	traerDatos: function(avion){
-		var p = {};
-		p.id_avion = avion;
-		var res = this._rpc.callSync("getCranks",p);
+	traerDatos: function(filtros){
+		var res = this._rpc.callSync("getCranks",filtros);
 		this.tblGral.getTableModel().setDataAsMapArray(res, true, true);
 	}
 }
