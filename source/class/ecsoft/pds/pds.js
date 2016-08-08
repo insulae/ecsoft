@@ -82,23 +82,28 @@ construct : function () {
 	     	
 	     	
 	     	checks.setLayout(new qx.ui.layout.Canvas());
-	     	var grafica = new ecsoft.pds.grafica();
-	     	checks.add(grafica,{top: "1%", left: "1%", bottom: "30%", edge:1});
-	     	grafica.mostrar();
+	     	//checks.add(new ecsoft.pds.grafica(),{top: "1%", left: "1%", bottom: "30%", edge:1});
 	     checks.add(this._tblChecks,{top: "71%", left: "1%", bottom:"0%", edge:1});
 	     
 		 var cranks = new qx.ui.tabview.Page("Cranks", "");
 	     	cranks.setLayout(new qx.ui.layout.Canvas());
 	     	this._tblCranks= new ecsoft.pds.cranks();
 	     	cranks.setBackgroundColor("#e5caa7");
-	     	
+	     
+	     this._grafCranks = new ecsoft.pds.grafica2();
 	     cranks.add(this._tblCranks,{top: "71%", left: "1%", bottom:"0%", edge:1});
-	     cranks.add(new ecsoft.pds.cranks(),{top: "1%", left: "1%", bottom: "30%", edge:1});
+	     cranks.add(this._grafCranks,{top: "1%", left: "1%", bottom: "30%", edge:1});
 
-		 
+	     
 		 var grabaciones = new qx.ui.tabview.Page("Grabaciones", "");
-	     	grabaciones.setLayout(new qx.ui.layout.Canvas());
-	     	//grabaciones.add(new ecsoft.pds.grafica(),{top: "1%", left: "1%", bottom: "30%", edge:1});
+		 	grabaciones.setLayout(new qx.ui.layout.Canvas());
+		 	grabaciones.setBackgroundColor("#e5caa7");
+		 	
+	     	this._tblGrabaciones= new ecsoft.pds.grabaciones();
+		 	this._grafGrabaciones = new ecsoft.pds.grafica2();
+		 	grabaciones.add(this._tblGrabaciones,{top: "71%", left: "1%", bottom:"0%", edge:1});
+		     grabaciones.add(this._grafGrabaciones,{top: "1%", left: "1%", bottom: "30%", edge:1});	     	
+	     	//grabaciones.add(this._grafica,{top: "1%", left: "1%", bottom: "30%", edge:1});
 		 
 	     
      
@@ -112,8 +117,47 @@ construct : function () {
      
 //################################################# EVENTOS ################################################# 
      this._tblChecks.addListener("cambiarDatosGraf",function(e){
-    	 console.log(e.getData());
+    	 //var datosChecks= rpc.callSync("getCheck",e.getData());
+    	 //console.log(datosChecks);
      },this);
+
+     this._tblCranks.addListener("cambiarDatosGraf",function(e){
+    	 
+    	 var datosGrafica = [
+             
+                  { x: 54, y: 68 },
+                  { x: 56, y: 68 },
+                  { x: 60, y: 68 },
+                  { x: 70, y: 28 },
+                  { x: 80, y: 34 },
+                  { x: 90, y: 14}
+                  ];
+    	 
+    	 this._grafCranks.setDatos(datosGrafica);
+    	 this._grafCranks.mostrarGrafica();
+
+     },this);
+     
+     this._tblGrabaciones.addListener("cambiarDatosGraf",function(e){
+    	 
+    	 var filtros={};
+    	 filtros.id_rec = e.getData();
+    	 var datos = rpc.callSync("getGrabacionDatos",filtros);
+    	 
+    	var grabaVoltaje=[];
+    	var grabaAmperaje=[];
+    	for (var i=0; i<datos.length; i++) {
+    		var sensores = qx.lang.Json.parse(sensores);
+    		console.log(sensores);
+    		grabaVoltaje.push({x: new Date((datos[i].fyh+"."+datos[i].mseg)), y: sensores.vol});
+    		grabaAmperaje.push({x: new Date((datos[i].fyh+"."+datos[i].mseg)), y: sensores.amp});
+    	}
+    	 var datosGrafica = grabaVoltaje;
+    	 
+    	 this._grafGrabaciones.mostrarGrafica();
+    	 this._grafGrabaciones.setDatos(datosGrafica);
+
+     },this);       
      
      //eventos menu
      this._lstAviones.addListener("changeSelection", this._cambiarDatos, this);
@@ -131,6 +175,7 @@ members : {
 	 
 	 this._tblChecks.traerDatos(filtros);
 	 this._tblCranks.traerDatos(filtros);
+	 this._tblGrabaciones.traerDatos(filtros);
 	}	
 }
 

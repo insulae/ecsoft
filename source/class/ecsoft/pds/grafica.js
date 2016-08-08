@@ -5,7 +5,8 @@ qx.Class.define("ecsoft.pds.grafica", {
   construct : function()
   {
     this.base(arguments);  
-    this.addListenerOnce("appear", this.__onAppearOnce, this); 
+    this.addListenerOnce("appear", this.__onAppearOnce, this);
+    
   },
   members :
   {

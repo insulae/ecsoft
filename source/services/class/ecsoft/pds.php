@@ -57,6 +57,49 @@ function method_getCranks ($params, $error) {
 	return $res;
 }
 
+//############################################################ GRABACIONES ###############################################################
+function method_getGrabaciones ($params, $error) {
+	$p = @$params[0];
+	$db = $this->db;
+
+	$q = $db->query("
+			SELECT *
+			FROM rec
+			WHERE id_avion = '".$p->id_avion."'
+	");
+	if ($db->error) { $error->SetError(JsonRpcError_Unknown, (__FILE__ . " - " . (__LINE__ - 1) . ": " . $db->error)); return $error; }
+
+	$res = Array();
+	while ($r = $q->fetch_object()) {
+		$res []= $r;
+	}
+
+	return $res;
+}
+
+function method_getGrabacionDatos ($params, $error) {
+	$p = @$params[0];
+	$db = $this->db;
+
+	$q = $db->query("
+			SELECT
+				sensores,
+				fyh,
+				mseg
+			FROM rec_item
+			WHERE id_rec = ".$p->id_rec
+	);
+	if ($db->error) { $error->SetError(JsonRpcError_Unknown, (__FILE__ . " - " . (__LINE__ - 1) . ": " . $db->error)); return $error; }
+	$res = Array();
+	while ($r = $q->fetch_object()) {
+		$res []= $r;
+	}
+
+	return $res;
+}
+
+	
+//############################################################ AVIONES ###############################################################
 function method_getAviones ($params, $error) {
 	$p = @$params[0];
 	$db = $this->db;
