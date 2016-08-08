@@ -5,21 +5,7 @@ qx.Class.define("ecsoft.pds.grafica", {
   construct : function()
   {
     this.base(arguments);  
-    this.addListenerOnce("appear", this.__onAppearOnce, this);
-    this.datosGrafica = [
-                         { x: 10, y: 71},
-                         { x: 20, y: 55},
-                         { x: 30, y: 50 },
-                         { x: 40, y: 65 },
-                         { x: 50, y: 95 },
-                         { x: 52, y: 68 },
-                         { x: 54, y: 68 },
-                         { x: 56, y: 68 },
-                         { x: 60, y: 68 },
-                         { x: 70, y: 28 },
-                         { x: 80, y: 34 },
-                         { x: 90, y: 14}
-                         ];
+    this.addListenerOnce("appear", this.__onAppearOnce, this); 
   },
   members :
   {
@@ -53,7 +39,20 @@ qx.Class.define("ecsoft.pds.grafica", {
 			markerBorderColor:"#73d216",
 			markerType: "circle",
 			markerSize: 10,
-            dataPoints: this.datosGrafica
+            dataPoints: [
+                         { x: 10, y: 71},
+                         { x: 20, y: 55},
+                         { x: 30, y: 50 },
+                         { x: 40, y: 65 },
+                         { x: 50, y: 95 },
+                         { x: 52, y: 68 },
+                         { x: 54, y: 68 },
+                         { x: 56, y: 68 },
+                         { x: 60, y: 68 },
+                         { x: 70, y: 28 },
+                         { x: 80, y: 34 },
+                         { x: 90, y: 14}
+                         ]
           }
         ]
       });

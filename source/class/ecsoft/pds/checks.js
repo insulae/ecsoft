@@ -17,7 +17,7 @@ construct : function () {
 	var tbmGral = new qx.ui.table.model.Simple();
 	tbmGral.setColumns(
 		["id", "Fecha", "Observación"],
-		["id_rec", "fyh", "observacion"]
+		["id_check", "fyh", "observacion"]
 	);
 	
 	this.tblGral = new qx.ui.table.Table(tbmGral, custom);
@@ -34,9 +34,9 @@ construct : function () {
 	
 	
 	//eventos
-	this.tblGral.addListener("click",function(){
-		var id_rec = this.tblGral.getTableModel().getValueById("id_rec",this.tblGral.getFocusedRow());
-		this.fireDataEvent("cambiarDatosGraf",id_rec);
+	this.tblGral.getSelectionModel().addListener("changeSelection",function(){
+		var id_check = this.tblGral.getTableModel().getValueById("id_check",this.tblGral.getFocusedRow());
+		this.fireDataEvent("cambiarDatosGraf",id_check);
 
 	},this);
 },

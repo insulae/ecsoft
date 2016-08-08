@@ -82,7 +82,9 @@ construct : function () {
 	     	
 	     	
 	     	checks.setLayout(new qx.ui.layout.Canvas());
-	     	//checks.add(new ecsoft.pds.grafica(),{top: "1%", left: "1%", bottom: "30%", edge:1});	     	
+	     	var grafica = new ecsoft.pds.grafica();
+	     	checks.add(grafica,{top: "1%", left: "1%", bottom: "30%", edge:1});
+	     	grafica.mostrar();
 	     checks.add(this._tblChecks,{top: "71%", left: "1%", bottom:"0%", edge:1});
 	     
 		 var cranks = new qx.ui.tabview.Page("Cranks", "");
