@@ -33,10 +33,8 @@ construct : function () {
 	this.setBackgroundColor("#a4c9e1");
 	
 	
-	this.traerDatos(2);
-	
 	//eventos
-	this.tblGral.addListener("click",function(){
+	this.tblGral.getSelectionModel().addListener("changeSelection",function(){
 		var id_rec = this.tblGral.getTableModel().getValueById("id_rec",this.tblGral.getFocusedRow());
 		this.fireDataEvent("cambiarDatosGraf",id_rec);
 

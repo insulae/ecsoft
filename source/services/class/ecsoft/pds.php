@@ -37,6 +37,7 @@ function method_getChecks ($params, $error) {
 	return $res;
 }
 
+//############################################################ CRANKS ###############################################################
 function method_getCranks ($params, $error) {
 	$p = @$params[0];
 	$db = $this->db;
@@ -57,6 +58,26 @@ function method_getCranks ($params, $error) {
 	return $res;
 }
 
+function method_getCranksDatos ($params, $error) {
+	$p = @$params[0];
+	$db = $this->db;
+
+	$q = $db->query("
+			SELECT
+				sensores,
+				fyh,
+				mseg
+			FROM rec_item
+			WHERE id_rec = ".$p->id_rec
+			);
+	if ($db->error) { $error->SetError(JsonRpcError_Unknown, (__FILE__ . " - " . (__LINE__ - 1) . ": " . $db->error)); return $error; }
+	$res = Array();
+	while ($r = $q->fetch_object()) {
+		$res []= $r;
+	}
+	return $res;
+}
+
 //############################################################ GRABACIONES ###############################################################
 function method_getGrabaciones ($params, $error) {
 	$p = @$params[0];
@@ -66,6 +87,7 @@ function method_getGrabaciones ($params, $error) {
 			SELECT *
 			FROM rec
 			WHERE id_avion = '".$p->id_avion."'
+			AND crank = 0
 	");
 	if ($db->error) { $error->SetError(JsonRpcError_Unknown, (__FILE__ . " - " . (__LINE__ - 1) . ": " . $db->error)); return $error; }
 
@@ -94,7 +116,6 @@ function method_getGrabacionDatos ($params, $error) {
 	while ($r = $q->fetch_object()) {
 		$res []= $r;
 	}
-
 	return $res;
 }
 

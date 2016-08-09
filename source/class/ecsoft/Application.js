@@ -30,17 +30,22 @@ main : function() {
 	}
 	var doc = this.getRoot();
 	//doc.add(new ecsoft.forms.checks(),{edge:0});
-	doc.setBackgroundColor("#e5caa7");
+	doc.setBackgroundColor("#8994a6");
 	
 	//MENU GENERAL
 	var menuGral = new qx.ui.groupbox.GroupBox();
 		menuGral.set({minWidth:150,maxWidth:150});
 		menuGral.setLayout(new qx.ui.layout.VBox(2).set({alignX:"left"}));
 	
-		var btnPDS = new qx.ui.form.Button("PDS");
-		var btnInventario = new qx.ui.form.Button("Inventario");
-		var btnAlarmas = new qx.ui.form.Button("Alarmas");
-		var btnConfiguracion = new qx.ui.form.Button("Configuración");
+		var btnPDS = new qx.ui.form.Button("PDS", "ico/24/gpu.png");
+		btnPDS.setCenter(false);
+		var btnInventario = new qx.ui.form.Button("Inventario", "ico/24/inventario.png");
+		btnInventario.setCenter(false);
+		var btnAlarmas = new qx.ui.form.Button("Alarmas", "ico/24/alarma.png");
+		btnAlarmas.setCenter(false);
+		var btnConfiguracion = new qx.ui.form.Button("Configuración","ico/24/configuracion.png");
+		btnConfiguracion.setCenter(false);
+		
 		
 	menuGral.add(btnPDS);
 	menuGral.add(btnInventario);
