@@ -85,16 +85,14 @@ construct : function () {
 	     this._pgRecs.add(this._tblRecs,{edge:0});   
 	     
 	     //tab_cranks
-		 this._cranks = new qx.ui.tabview.Page("Cranks","ecsoft/24/crank.png");
-		 	this._cranks.setLayout(new qx.ui.layout.Canvas());
-		 	this._cranks.setBackgroundColor(colorBase);
-	     	
-		 	this._tblCranks= new ecsoft.pds.cranks();
-	     	this._grafCranks = new ecsoft.pds.grafCrank();
-	     	
-	     this._cranks.add(this._tblCranks,{top: "71%", left: "1%", bottom:"0%", edge:1});
-	     this._cranks.add(this._grafCranks,{bottom: "30%", edge:1});
-	         	
+	     this._pgCranks = new qx.ui.tabview.Page("Cranks","ecsoft/24/crank.png");
+	     	this._pgCranks.setLayout(new qx.ui.layout.Canvas());
+	     	this._pgCranks.setBackgroundColor(colorBase);
+ 	
+	     	this._tblCranks = new ecsoft.pds.cranks();
+ 		
+	     this._pgCranks.add(this._tblCranks,{edge:0});   	     
+
 		//tab_check
 	 	this._pgChecks = new qx.ui.tabview.Page("Checks","ecsoft/24/check.png");
 	 		this._pgChecks.setLayout(new qx.ui.layout.Canvas());
@@ -107,7 +105,7 @@ construct : function () {
      
 	     
 	 this._tbvPDS.add(this._pgRecs);
-     this._tbvPDS.add(this._cranks);
+     this._tbvPDS.add(this._pgCranks);
      this._tbvPDS.add(this._pgChecks);
      
      this._add(menuPDS,{top:"30%", bottom:"50%", right:"90%", edge:0});
@@ -116,7 +114,7 @@ construct : function () {
       
 //################################################# EVENTOS ################################################# 
 
-     //CRANKS
+/*     //CRANKS
      this._tblCranks.addListener("cambiarDatosGraf",function(e){
     	 
     	 var filtros={};
@@ -136,7 +134,7 @@ construct : function () {
 
    		this._grafCranks.crearGrafica(datosVoltaje,datosAmperaje);
      },this);       
-          
+*/          
      
      //eventos menu
      this._lstAviones.addListener("changeSelection", this._cambiarDatos, this);
@@ -161,8 +159,8 @@ members : {
 		 
 		 if(this._tbvPDS.isSelected(this._pgChecks)){
 			 this._tblChecks.traerGrafica("aparece");
-		 }else if(this._tbvPDS.isSelected(this._cranks)){
-			 this._tblCranks.traerGrafica();	 
+		 }else if(this._tbvPDS.isSelected(this._pgCranks)){
+			 this._tblCranks.traerGrafica("aparece");	 
 		 }else if(this._tbvPDS.isSelected(this._pgRecs)){
 			 this._tblRecs.traerGrafica();
 		 }	 

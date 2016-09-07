@@ -59,7 +59,7 @@ function method_getCranks ($params, $error) {
 	return $res;
 }
 
-function method_getCranksDatos ($params, $error) {
+function method_getCrankDatos ($params, $error) {
 	$p = @$params[0];
 	$db = $this->db;
 
