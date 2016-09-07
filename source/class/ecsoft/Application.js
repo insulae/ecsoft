@@ -37,13 +37,13 @@ main : function() {
 		menuGral.set({minWidth:150,maxWidth:150});
 		menuGral.setLayout(new qx.ui.layout.VBox(2).set({alignX:"left"}));
 	
-		var btnPDS = new qx.ui.form.Button("PDS", "ico/24/gpu.png");
+		var btnPDS = new qx.ui.form.Button("PDS", "ecsoft/24/gpu.png");
 		btnPDS.setCenter(false);
-		var btnInventario = new qx.ui.form.Button("Inventario", "ico/24/inventario.png");
+		var btnInventario = new qx.ui.form.Button("Inventario", "ecsoft/24/inventario.png");
 		btnInventario.setCenter(false);
-		var btnAlarmas = new qx.ui.form.Button("Alarmas", "ico/24/alarma.png");
+		var btnAlarmas = new qx.ui.form.Button("Alarmas", "ecsoft/24/alarma.png");
 		btnAlarmas.setCenter(false);
-		var btnConfiguracion = new qx.ui.form.Button("Configuración","ico/24/configuracion.png");
+		var btnConfiguracion = new qx.ui.form.Button("Configuración","ecsoft/24/configuracion.png");
 		btnConfiguracion.setCenter(false);
 		
 		

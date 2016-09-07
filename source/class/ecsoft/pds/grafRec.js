@@ -6,9 +6,7 @@ qx.Class.define("ecsoft.pds.grafRec", {
   {
     this.base(arguments);  
     this.addListenerOnce("appear", this.__onAppearOnce, this);
-    this._chart='';
-    this._canvas='';
-    
+    this.addListener("appear", this._cambio, this);
   },
   members :
   {
@@ -57,14 +55,14 @@ qx.Class.define("ecsoft.pds.grafRec", {
 		    			    {
 		    			     type: "spline",
 		    			     color: "#14E9FF",
-		    			     dataPoints: this._datosVoltaje,
+		    			     dataPoints: this._datosAmperaje,
 		    			     markerSize: "0"
 		    			    },
 		    			    {
 		    			     type: "spline",
 		    			     color: "#14E900",
 		    			     axisYType: "secondary",
-		    			     dataPoints: this._datosAmperaje,
+		    			     dataPoints: this._datosVoltaje,
 		    			     markerSize: "0"
 		    			    }
 		    			  ]	 
@@ -88,7 +86,13 @@ qx.Class.define("ecsoft.pds.grafRec", {
     __onAppearOnce : function()
     {
       this.getContentElement().getDomElement().setAttribute("id", "canvasRec", true);
-    }
+    },
+	_cambio: function(){
+		if(this._canvas){
+		    this._chart.render();
+		    qx.html.Element.flush();
+		}
+  	}   
   }
 });
 

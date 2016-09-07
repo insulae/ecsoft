@@ -1,10 +1,11 @@
-qx.Class.define("ecsoft.pds.grabaciones", {
+qx.Class.define("ecsoft.pds.recs", {
 extend : qx.ui.core.Widget,
 events : {
 	"cambiarDatosGraf" : "qx.event.type.Data"
 },
 construct : function () {
 	this.base(arguments);
+	
 	this._setLayout(new qx.ui.layout.Canvas());
 	
 	//RPC
@@ -29,21 +30,36 @@ construct : function () {
 		rbeGral.set(2, {width:"88%", minWidth:30});
 	
 	
-	this._add(this.tblGral,{edge:0});
-	this.setBackgroundColor("#a4c9e1");
+	this._grafica = new ecsoft.pds.grafRec();
 	
+	this._add(this._grafica,{bottom: "30%", edge:1});
+	this._add(this.tblGral,{top: "71%", left: "1%", bottom:"0%", edge:1});
+	this.setBackgroundColor("#8994a6");
 	
 	//eventos
 	this.tblGral.getSelectionModel().addListener("changeSelection",function(){
 		var id_rec = this.tblGral.getTableModel().getValueById("id_rec",this.tblGral.getFocusedRow());
-		this.fireDataEvent("cambiarDatosGraf",id_rec);
-
+		this.traerGrafica(id_rec);
 	},this);
 },
 members : {
 	traerDatos: function(filtros){
-		var res = this._rpc.callSync("getGrabaciones",filtros);
-		this.tblGral.getTableModel().setDataAsMapArray(res, true, true);
+	 	var datos = this._rpc.callSync("getRecs",filtros);
+		this.tblGral.getTableModel().setDataAsMapArray(datos, true, true);
+	},
+	traerGrafica: function(id_rec){
+		var filtros={};
+		filtros.id_rec=id_rec;
+		var datos = this._rpc.callSync("getRecDatos",filtros);
+		var datosVoltaje=[];
+    	var datosAmperaje=[];
+    	for (var i=0; i<datos.length; i++) {
+    		var sensores = qx.lang.Json.parse(datos[i].sensores);    		
+	    	
+    		datosVoltaje.push({x: new Date((datos[i].fyh+"."+datos[i].mseg)), y: sensores.vol});
+	    	datosAmperaje.push({x: new Date((datos[i].fyh+"."+datos[i].mseg)), y: sensores.amp});
+	    }
+	   	this._grafica.crearGrafica(datosVoltaje,datosAmperaje);
 	}
 }
 

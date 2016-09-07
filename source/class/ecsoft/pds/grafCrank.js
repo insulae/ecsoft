@@ -1,11 +1,12 @@
 qx.Class.define("ecsoft.pds.grafCrank", {  
+  
   extend : qx.ui.core.Widget,
-
+  
   construct : function()
   {
     this.base(arguments);  
     this.addListenerOnce("appear", this.__onAppearOnce, this);
-    
+    this.addListener("appear", this._cambio, this);
   },
   members :
   {
@@ -54,14 +55,14 @@ qx.Class.define("ecsoft.pds.grafCrank", {
 		    			    {
 		    			     type: "spline",
 		    			     color: "#14E9FF",
-		    			     dataPoints: this._datosVoltaje,
+		    			     dataPoints: this._datosAmperaje,
 		    			     markerSize: "0"
 		    			    },
 		    			    {
 		    			     type: "spline",
 		    			     color: "#14E900",
 		    			     axisYType: "secondary",
-		    			     dataPoints: this._datosAmperaje,
+		    			     dataPoints: this._datosVoltaje,
 		    			     markerSize: "0"
 		    			    }
 		    			  ]	 
@@ -69,29 +70,33 @@ qx.Class.define("ecsoft.pds.grafCrank", {
 		    	
 		      this._chart.render();
 		      
-		      var canvas = this.getContentElement().getDomElement().firstChild.firstChild;
-		      
+		      this._canvas = this.getContentElement().getDomElement().firstChild.firstChild;
 		      this.addListener("resize", function(e){
-		        this.info("resize event");
-		        
-		        canvas.setAttribute("width", e.getData().width);
-		        canvas.setAttribute("height", e.getData().height);
-		        //console.log(chart);
-		        //chart.setSize(100,100)
-		        //self.getRoot().fireDataEvent('resize');
-		        this._chart.render();
-		        qx.html.Element.flush(); 
-		      });
+			        this.info("resize event");
+			        
+			        this._canvas.setAttribute("width", e.getData().width);
+			        this._canvas.setAttribute("height", e.getData().height);
+			        //console.log(chart);
+			        //chart.setSize(100,100)
+			        //self.getRoot().fireDataEvent('resize');
+			        this._chart.render();
+			        qx.html.Element.flush(); 
+			      });
 	},
     __onAppearOnce : function()
     {
       this.getContentElement().getDomElement().setAttribute("id", "canvasCrank", true);
-    }
+    },
+	_cambio: function(){
+		if(this._canvas){
+		    this._chart.render();
+		    qx.html.Element.flush();
+		}
+  	}   
   }
 });
 
 var callback = function(){
-
 // 	
 //  var win = new qx.ui.window.Window("CanvasJS");
 //  win.setLayout(new qx.ui.layout.Grow());

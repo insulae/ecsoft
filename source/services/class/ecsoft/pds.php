@@ -47,6 +47,7 @@ function method_getCranks ($params, $error) {
 			FROM rec
 			WHERE id_avion = '".$p->id_avion."'
 			AND crank = 1
+			ORDER BY fyh DESC
 	");
 	if ($db->error) { $error->SetError(JsonRpcError_Unknown, (__FILE__ . " - " . (__LINE__ - 1) . ": " . $db->error)); return $error; }
 
@@ -79,7 +80,7 @@ function method_getCranksDatos ($params, $error) {
 }
 
 //############################################################ GRABACIONES ###############################################################
-function method_getGrabaciones ($params, $error) {
+function method_getRecs($params, $error) {
 	$p = @$params[0];
 	$db = $this->db;
 
@@ -88,6 +89,7 @@ function method_getGrabaciones ($params, $error) {
 			FROM rec
 			WHERE id_avion = '".$p->id_avion."'
 			AND crank = 0
+			ORDER BY fyh DESC
 	");
 	if ($db->error) { $error->SetError(JsonRpcError_Unknown, (__FILE__ . " - " . (__LINE__ - 1) . ": " . $db->error)); return $error; }
 
@@ -99,7 +101,7 @@ function method_getGrabaciones ($params, $error) {
 	return $res;
 }
 
-function method_getGrabacionDatos ($params, $error) {
+function method_getRecDatos ($params, $error) {
 	$p = @$params[0];
 	$db = $this->db;
 
@@ -109,7 +111,7 @@ function method_getGrabacionDatos ($params, $error) {
 				fyh,
 				mseg
 			FROM rec_item
-			WHERE id_rec = ".$p->id_rec
+			WHERE id_rec = '".$p->id_rec."'"
 	);
 	if ($db->error) { $error->SetError(JsonRpcError_Unknown, (__FILE__ . " - " . (__LINE__ - 1) . ": " . $db->error)); return $error; }
 	$res = Array();
@@ -125,7 +127,10 @@ function method_getAviones ($params, $error) {
 	$p = @$params[0];
 	$db = $this->db;
 
-	$q = $db->query("SELECT * FROM avion");
+	$q = $db->query("
+			SELECT * 
+			FROM avion 
+			ORDER BY patente");
 	if ($db->error) { $error->SetError(JsonRpcError_Unknown, (__FILE__ . " - " . (__LINE__ - 1) . ": " . $db->error)); return $error; }
 
 	$res = Array();
